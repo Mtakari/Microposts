@@ -37,6 +37,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
+    public function microposts()
+    {
+        return $this->hasMany(Micropost::class);
+    }
+    
     public function loadRelationshipCounts() {
         $this->loadCount(["microposts","followings","followers"]);
     }
@@ -69,10 +74,6 @@ class User extends Authenticatable
         return $this->followings()->where("follow_id",$userId)->exists();    
     }
     
-    public function microposts()
-    {
-        return $this->hasMany(Micropost::class);
-    }
     
     public function followings() {
         return $this->belongsToMany(User::class,"user_follow","user_id","follow_id")->withTimestamps();

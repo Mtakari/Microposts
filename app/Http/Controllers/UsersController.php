@@ -36,27 +36,26 @@ class UsersController extends Controller
             'microposts' => $microposts,
         ]);
         // ユーザ詳細ビューでそれを表示
-        return view('users.show', [
-            'user' => $user,
-        ]);
+        //return view('users.show', [
+            //'user' => $user,
+        //]);
     }
     
         public function followings($id) {
             $user = User::findOrFail($id);
 
-        $user->loadRelationshipCounts();
+            $user->loadRelationshipCounts();
 
-        $followings = $user->followings()->paginate(10);
+            $followings = $user->followings()->paginate(10);
 
-        return view('users.followings', [
-            'user' => $user,
-            'users' => $followings,
-        ]);
+            return view('users.followings', [
+                'user' => $user,
+                'users' => $followings,
+            ]);
         
         }
         
-        public function followers($id)
-    {
+        public function followers($id) {
         // idの値でユーザを検索して取得
         $user = User::findOrFail($id);
 

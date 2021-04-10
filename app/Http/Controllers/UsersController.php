@@ -15,7 +15,9 @@ class UsersController extends Controller
         // ユーザ一覧ビューでそれを表示
         return view('users.index', [
             'users' => $users,
-        ]);    
+        ]);
+        
+        
     }
     
      public function show($id)
@@ -29,11 +31,11 @@ class UsersController extends Controller
         // ユーザの投稿一覧を作成日時の降順で取得
         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
         
-
         // ユーザ詳細ビューでそれらを表示
         return view('users.show', [
             'user' => $user,
             'microposts' => $microposts,
+            
         ]);
         // ユーザ詳細ビューでそれを表示
         //return view('users.show', [
@@ -70,5 +72,19 @@ class UsersController extends Controller
             'user' => $user,
             'users' => $followers,
         ]);
+    }
+    
+    public function favorites($id) {
+        
+        $user =User:: findOrFail($id);
+        
+        $user->loadRelationshipCounts();
+        
+        $favorites = $user->favorites()->paginate(10);
+        
+        return view("users.favorites",[
+                "user" => $user,
+                "microposts" => $favorites,
+            ]);
     }
 }
